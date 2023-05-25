@@ -7,9 +7,10 @@
                         <div class="max-w-7xl mx-auto sm:px-8 lg:px-8">
                             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                                 @if (auth()->user()->role_id ==1)
                                    
                                     <x-link href="{{ route('competitions.create') }}" class="m-7">Add new Competition</x-link>
-                                  
+                                  @endif
                                     <table class="w-full text-sm text-left text-gray-900">
                                       
                                         <thead class="text-xs text-gray-700 uppercase bg-gray-100">
