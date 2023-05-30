@@ -25,11 +25,33 @@
                         {{ __('competitions') }}
                     </x-nav-link>
                     @endif
+                    @if (auth()->user()->role_id ==3)
+                    <x-nav-link href="{{ route('participation.create') }}" :active="request()->routeIs('competitions.*')">
+                        {{ __('Resultats') }}
+                    </x-nav-link>
+                    @endif
                     @if (auth()->user()->role_id ==1)
                     <x-nav-link href="{{ route('participants.index') }}" :active="request()->routeIs('participants.*')">
                         {{ __('participants') }}
                     </x-nav-link>
                     @endif
+                    @if (auth()->user()->role_id ==1)
+                    <x-nav-link href="{{ route('judges.index') }}" :active="request()->routeIs('participants.*')">
+                        {{ __('jury') }}
+                    </x-nav-link>
+                    @endif
+                    @if (auth()->user()->role_id ==2)
+                    <x-nav-link href="{{ route('competitions.index') }}" :active="request()->routeIs('participants.*')">
+                        {{ __('competitions') }}
+                    </x-nav-link>
+                    @endif
+                    @if (auth()->user()->role_id ==2)
+                    <x-nav-link href="{{ route('participants.index') }}" :active="request()->routeIs('participants.*')">
+                        {{ __('participants') }}
+                    </x-nav-link>
+                    @endif
+                   
+          
                
                    
                   
@@ -155,8 +177,8 @@
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+     <!-- Responsive Navigation Menu -->
+     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
@@ -171,12 +193,32 @@
                 {{ __('competitions') }}
             </x-responsive-nav-link>
             @endif
+            @if (auth()->user()->role_id ==3)
+            <x-responsive-nav-link href="{{ route('participation.create') }}" :active="request()->routeIs('competitions.*')">
+                {{ __('Resultats') }}
+            </x-responsive-nav-link>
+            @endif
             @if (auth()->user()->role_id ==1)
             <x-responsive-nav-link href="{{ route('participants.index') }}" :active="request()->routeIs('participants.*')">
                 {{ __('participants') }}
             </x-responsive-nav-link>
             @endif
-          
+            @if (auth()->user()->role_id ==1)
+                    <x-responsive-nav-link href="{{ route('judges.index') }}" :active="request()->routeIs('participants.*')">
+                        {{ __('jury') }}
+                    </x-responsive-nav-link>
+                    @endif
+            @if (auth()->user()->role_id ==2)
+            <x-responsive-nav-link href="{{ route('participants.index') }}" :active="request()->routeIs('participants.*')">
+                {{ __('competitions') }}
+            </x-responsive-nav-link>
+            @endif
+            @if (auth()->user()->role_id ==2)
+            <x-responsive-nav-link href="{{ route('participants.index') }}" :active="request()->routeIs('participants.*')">
+                {{ __('participants') }}
+            </x-responsive-nav-link>
+            @endif
+            
             
         </div>
 
