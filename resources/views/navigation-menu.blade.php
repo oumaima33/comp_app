@@ -35,7 +35,21 @@
                         {{ __('participants') }}
                     </x-nav-link>
                     @endif
-               
+                    @if (auth()->user()->role_id ==1)
+                    <x-nav-link href="{{ route('judges.index') }}" :active="request()->routeIs('participants.*')">
+                        {{ __('jury') }}
+                    </x-nav-link>
+                    @endif
+                    @if (auth()->user()->role_id ==2)
+                    <x-nav-link href="{{ route('competitions.index') }}" :active="request()->routeIs('participants.*')">
+                        {{ __('competitions') }}
+                    </x-nav-link>
+                    @endif
+                    @if (auth()->user()->role_id ==2)
+                    <x-nav-link href="{{ route('participants.index') }}" :active="request()->routeIs('participants.*')">
+                        {{ __('participants') }}
+                    </x-nav-link>
+                    @endif
                    
                   
                 </div>
