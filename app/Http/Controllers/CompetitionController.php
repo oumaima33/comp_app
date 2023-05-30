@@ -3,13 +3,18 @@
 namespace App\Http\Controllers;
 use App\Models\Participant;
 use App\Models\competition;
+use App\Models\Judge;
+
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Mail\participantinscription;
 use App\Http\Requests\StorecompetitionRequest;
 use App\Http\Requests\StoreParticipantRequest;
 use App\Http\Requests\UpdatecompetitionRequest;
 use Illuminate\Contracts\Auth\Access\Gate;
+use Illuminate\Support\Facades\Mail;
+
 
 
 class CompetitionController extends Controller
@@ -19,13 +24,33 @@ class CompetitionController extends Controller
      */
     public function index()
     {
-        $competitions = Competition::with('participants')->get();
-        $user = Auth::user();
-        
-        return view('competitions.index', compact('competitions', 'user'));
-}
+        if(auth()->user()->role_id ==1 ||auth()->user()->role_id ==3 ) {
+            $competitions = Competition::with('participants')->get();
+            $user = Auth::user();
+            
+            return view('competitions.index', compact('competitions', 'user'));
+        }
+        else{
+            $jurys =auth()->user()->judge;
+            
+            foreach ($jurys as $jury) {
+                $competitions = $jury->competitions;
+                
+                $juryData[] = [
+        'jury' => $jury,
+        'competitions' => $competitions,
+    ];
 
-    /**
+            }
+   
+        }
+
+        
+        return view('competitions.index', compact('juryData'));
+    }
+        
+  
+  /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -103,7 +128,19 @@ class CompetitionController extends Controller
 
 
     public function join(Request $request,$id)
+   
     {
+       $competition=competition::where('id',$id)->firstOrFail();
+       $email=auth()->user()->email;
+       $details=[
+        'name'=>auth()->user()->name,
+        'email'=>$email,
+        'comp_code'=>$competition->code,
+        'competition_id'=>$id,
+    ];
+
+    Mail::to($email)->send(new participantinscription($details));
+
        
        
         $competition=competition::where('id',$id)->firstOrFail();

@@ -24,8 +24,9 @@ class competition extends Model
     {
         return $this->hasMany(Participant::class);
     }
-    public function Judge()
-    {
-        return $this->hasMany(Judge::class);
-    }
+    public function jurys()
+{
+    return $this->hasMany(Judge::class,'competition_id','id');
+}
+
 }

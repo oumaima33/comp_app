@@ -11,7 +11,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
@@ -61,14 +61,18 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
-    public function hasJoinedCompetition($competitionId)
-    {
-        return $this->participants()->where('competition_id', $competitionId)->exists();
-    }
-    
-    public function participants()
-    {
-        return $this->hasMany(Participant::class);
-    }
+    public function judge()
+{
+    return $this->hasMany(Judge::class,'comp_code');
+}
+public function hasJoinedCompetition($competitionId)
+{
+    return $this->participants()->where('competition_id', $competitionId)->exists();
+}
+
+public function participants()
+{
+    return $this->hasMany(Participant::class);
+}
 
 }

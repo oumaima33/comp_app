@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\CompetitionController;
 use App\Models\Participant;
 use App\Http\Requests\StoreParticipantRequest;
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateParticipantRequest;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\competition;
+use PDF;
+use Illuminate\Support\Facades\DB;
+
 class ParticipantController extends Controller
 {
     /**
@@ -15,8 +19,28 @@ class ParticipantController extends Controller
      */
     public function index()
     {
-        $participants= Participant::all();
+        if( auth()->user()->role_id ==1 ||auth()->user()->role_id ==3 ){
+            $participants= Participant::all();
         return view('participants.index', compact('participants'));
+        }
+        $jurys = auth()->user()->judge;
+        // dd($jurys);
+        foreach ($jurys as $jury) {
+            $juryId=$jury->competition_id;
+            $juryData[] = [
+                'jury' => $jury,
+                'participants' =>Participant::where('competition_id', $juryId)
+                ->get(),
+            ];
+        }
+        
+        // dd($juryId);
+        // $participants = Participant::join('competitions', 'participant.competition_id', '=', 'competitions.id')
+        //     ->where('competitions.id', $juryId)
+        //     ->get();
+        // dd($participants);
+            return view('participants.index', compact('juryData'));
+       
     }
 
     /**
@@ -24,16 +48,63 @@ class ParticipantController extends Controller
      */
     public function create()
     {
+
         
+        $participants= Participant ::where('name',auth()->user()->name)->get();
+        foreach($participants as $participant){
+            // dd($participant->competition_id);
+            $competitions = Competition::where('id',$participant->competition_id)->get();
+            $evaluations = DB::table('evaluation')->where('fk_par', $participant->id)->get();
+            // dd($evaluations);
+            $parData=[
+                'participant' => $participant,
+                       
+                'competitions'=>$competitions,
+                'evaluations' => $evaluations,
+
+            ];
+            
+            
+        
+        }
+
+        return view('participant.participations', compact('parData'));
+    
     }
+    public function generateCertificate(Participant $participant, competition $competition, $score)
+{
+    // Code pour calculer le score et récupérer les informations nécessaires
+    // dd($participant);
+    $data = [
+        'participant' => $participant,
+        'competition' => $competition,
+        'score' => $score,
+    ];
+    // dd($data);
+    view()->share('data', $data);
+    $pdf=PDF::loadView('participant.certificat',$data);
+
+    return $pdf->download($data['participant']->name .'_certificat.pdf');
+}
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request,$id)
+    public function store(Request $request, $id)
+   
     {
  
         $validatedData = $request->validate([
+            'comp_code' => [
+                'required','exists:competitions,code',
+                function ($attribute, $value, $fail) use ($id) {
+                    $competition = Competition::where('id', $id)->where('code', $value)->first();
+    
+                    if (!$competition) {
+                        $fail('The comp_code must match the code of the competition with the specified ID.');
+                    }
+                }
+            ],
             'comp_code' =>  [
                 'required','exists:competitions,code',
                 function ($attribute, $value, $fail) use ($id) {
@@ -49,6 +120,8 @@ class ParticipantController extends Controller
         ]);
     
         $competition = Competition::where('code', $validatedData['comp_code'])->where('id',$id)->firstOrFail();
+   
+        $competition = Competition::where('code', $validatedData['comp_code'])->where('id',$id)->firstOrFail();
         $user = Auth::user();
         $participant = new Participant;
         $participant->name = $validatedData['name'];
@@ -61,7 +134,12 @@ class ParticipantController extends Controller
         $participant->user_id=$user->id;
         $participant->save();
         
+        
         return redirect('/competitions')->with('success','You have successfully joined the competition.');
+
+    
+       
+
     }
 
     /**
