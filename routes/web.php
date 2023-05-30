@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\ParticipantController;
+use App\Http\Controllers\JudgeController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes

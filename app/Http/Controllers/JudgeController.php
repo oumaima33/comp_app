@@ -82,7 +82,7 @@ return view('emi.jury',compact(['competitions']));
                 ]);
             
                 }else {
-                    
+                   
             
                     $new_evaluator = Judge::create([
                         'name' => $request->name,
@@ -93,7 +93,7 @@ return view('emi.jury',compact(['competitions']));
                     ]);
                 }
                 
-                
+                $password="12345678";
 
                 // sending alert invitation to the evaluator by email
                 
