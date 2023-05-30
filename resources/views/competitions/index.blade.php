@@ -75,75 +75,126 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @forelse ($competitions as $competition)
-                                            <tr class="bg-white border-b">
-                                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
-                                                    {{ $competition->comp_name}}
-                                                </td>
-                                                @if (auth()->user()->role_id ==1)
-                                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
-                                                    {{ $competition->code}}
-                                                </td>
-                                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
-                                                    {{ $competition->part_nbr}}
-                                                </td>
-                                                @endif
-                                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
-                                                    {{ $competition->description}}
-                                                </td>
-                                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
-                                                    {{ $competition->categorie}}
-                                                </td>
-                                                
-                                            @if (auth()->user()->role_id ==1)
-                                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
-                                                    {{ $competition->criteria_1}}
-                                                </td>
-                                                <td class="px-2 py-2font-medium text-gray-900 whitespace-nowrap">
-                                                    {{ $competition->criteria_2}}
-                                                </td>
-                                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
-                                                    {{ $competition->criteria_3}}
-                                                </td>
-                                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
-                                                    {{ $competition->criteria_4}}
-                                                </td>
-                                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
-                                                    {{ $competition->criteria_5}}
-                                                </td>
-                                                
-                                                    <td class="px-2 py-2">
-                                                        <x-link href="{{ route('competitions.edit', $competition) }}">Edit</x-link></td><td>
-                                                        <form method="POST" action="{{ route('competitions.destroy', $competition) }}" class="inline-block">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <x-danger-button
-                                                                type="submit"
-                                                                onclick="return confirm('Are you sure?')">Delete</x-danger-button>
-                                                        </form>
-                                            @endif
-                                                        
-                                                        <td class="px-2 py-2">
-                                                            <x-link href="{{ route('competitions.show', $competition) }}">Show</x-link></td>
-                                                    </td>
-                                                    @if (auth()->user()->role_id ==3)      
-                                                    <td class="px-2 py-2">
-                                                        <x-link href="{{ route('competitions.join', $competition) }}">JOIN</x-link></td>
-                                                    </td>
-                                                   
-                                                    @endif
+                                            @if(auth()->user()->role_id ==2)
+                                            @foreach ($juryData as $data)
+                                                @if (empty($data['competitions']))
+                                                <p>Aucune compétition disponible pour le moment.</p>
+                                                @else
+        
+
+                                                @forelse ($data['competitions'] as $competition)
+                                                    <tr class="bg-white border-b">
+                                                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                                         {{ $competition->comp_name}}
+                                                        </td>
                                             
-                                            </tr>
-                                            
-                                        @empty
-                                            <tr class="bg-white border-b">
-                                                <td colspan="2"
-                                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                                    {{ __('No competition found') }}
-                                            
+                                            <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                                {{ $competition->description}}
                                             </td>
+                                            <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                                {{ $competition->categorie}}
+                                            </td>
+                                            
+                                        
+                                            
+                                                
+                                                    
+                                                    <td class="px-2 py-2">
+                                                        <x-link href="{{ route('competitions.show', $competition) }}">Show</x-link></td>
+                                                </td>
+                                               
+                                        
+                                        </tr>
+                                        
+                                    @empty
+                                        <tr class="bg-white border-b">
+                                            <td colspan="2"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                                {{ __('No competition found') }}
+                                        
                                         </td>
-                                        @endforelse
+                                    </td>
+                                    
+                                    @endforelse 
+                                    @endif
+                                    @endforeach
+                                    @else
+                                    @if (empty($competitions))
+                                    <p>Aucune compétition disponible pour le moment.</p>
+                            @else
+
+
+                                @forelse ($competitions as $competition)
+                            <tr class="bg-white border-b">
+                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                    {{ $competition->comp_name}}
+                                </td>
+                                @if (auth()->user()->role_id ==1)
+                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                    {{ $competition->code}}
+                                </td>
+                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                    {{ $competition->part_nbr}}
+                                </td>
+                                @endif
+                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                    {{ $competition->description}}
+                                </td>
+                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                    {{ $competition->categorie}}
+                                </td>
+                                
+                            @if (auth()->user()->role_id ==1)
+                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                    {{ $competition->criteria_1}}
+                                </td>
+                                <td class="px-2 py-2font-medium text-gray-900 whitespace-nowrap">
+                                    {{ $competition->criteria_2}}
+                                </td>
+                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                    {{ $competition->criteria_3}}
+                                </td>
+                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                    {{ $competition->criteria_4}}
+                                </td>
+                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                    {{ $competition->criteria_5}}
+                                </td>
+                                
+                                    <td class="px-2 py-2">
+                                        <x-link href="{{ route('competitions.edit', $competition) }}">Edit</x-link></td><td>
+                                        <form method="POST" action="{{ route('competitions.destroy', $competition) }}" class="inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <x-danger-button
+                                                type="submit"
+                                                onclick="return confirm('Are you sure?')">Delete</x-danger-button>
+                                        </form>
+                            @endif
+                                        
+                                        <td class="px-2 py-2">
+                                            <x-link href="{{ route('competitions.show', $competition) }}">Show</x-link></td>
+                                    </td>
+                                    @if (auth()->user()->role_id ==3)      
+                                    <td class="px-2 py-2">
+                                        <x-link href="{{ route('competitions.join', $competition->id) }}">JOIN</x-link></td>
+                                    </td>
+                                    @endif
+                            
+                            </tr>
+                            
+                        @empty
+                            <tr class="bg-white border-b">
+                                <td colspan="2"
+                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                    {{ __('No competition found') }}
+                            
+                            </td>
+                        </td>
+                        
+                        @endforelse 
+                        @endif
+                                     @endif 
                                         </tbody>
                                     </table>
                                 </div>
