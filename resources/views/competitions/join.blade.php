@@ -11,11 +11,12 @@
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg px-4 py-4">
                     <x-validation-errors class="mb-4" />
  
-                    <form method="POST" action="{{ route('participants.store') }}">
+                    <form method="POST" action="{{ route('participants.store',$competition->id) }}">
                         @csrf
                         <div>
                             <x-label for="comp_code" value="{{ __('competition code') }}" />
                             <x-input id="comp_code" class="block mt-1 w-full" type="integer" name="comp_code" :value="old('comp_code')" required autofocus autocomplete="comp_code" />
+                           
                             <input type="hidden" name="id" value="{{ $competition->id}}">
                             <x-label for="name" value="{{ __('Participant Name') }}" />
                             <x-input id="name" class="block mt-1 w-full" type="string" name="name" :value="old('name')" required autofocus autocomplete="name" />
@@ -28,6 +29,7 @@
                             <x-button>
                                 {{ __('Join competition') }}
                             </x-button>
+                          
                            
                 </div>
             </div>

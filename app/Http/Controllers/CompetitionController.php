@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Participant;
 use App\Models\competition;
 use App\Models\Judge;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Mail\participantinscription;
 use App\Http\Requests\StorecompetitionRequest;
@@ -23,8 +25,10 @@ class CompetitionController extends Controller
     public function index()
     {
         if(auth()->user()->role_id ==1 ||auth()->user()->role_id ==3 ) {
-            $competitions = Competition::all();
-            return view('competitions.index', compact('competitions'));
+            $competitions = Competition::with('participants')->get();
+            $user = Auth::user();
+            
+            return view('competitions.index', compact('competitions', 'user'));
         }
         else{
             $jurys =auth()->user()->judge;
@@ -44,8 +48,9 @@ class CompetitionController extends Controller
         
         return view('competitions.index', compact('juryData'));
     }
-
-    /**
+        
+  
+  /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -123,6 +128,7 @@ class CompetitionController extends Controller
 
 
     public function join(Request $request,$id)
+   
     {
        $competition=competition::where('id',$id)->firstOrFail();
        $email=auth()->user()->email;
@@ -135,8 +141,15 @@ class CompetitionController extends Controller
 
     Mail::to($email)->send(new participantinscription($details));
 
+       
+       
+        $competition=competition::where('id',$id)->firstOrFail();
         return view('competitions.join', compact('competition'));
+       
+
+       
     }
 }
+
 
 

@@ -65,4 +65,14 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     return $this->hasMany(Judge::class,'comp_code');
 }
+public function hasJoinedCompetition($competitionId)
+{
+    return $this->participants()->where('competition_id', $competitionId)->exists();
+}
+
+public function participants()
+{
+    return $this->hasMany(Participant::class);
+}
+
 }

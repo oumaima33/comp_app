@@ -6,6 +6,8 @@ use App\Models\Participant;
 use App\Http\Requests\StoreParticipantRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateParticipantRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use App\Models\competition;
 use PDF;
 use Illuminate\Support\Facades\DB;
@@ -89,10 +91,21 @@ class ParticipantController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request, $id)
+   
     {
  
         $validatedData = $request->validate([
             'comp_code' => [
+                'required','exists:competitions,code',
+                function ($attribute, $value, $fail) use ($id) {
+                    $competition = Competition::where('id', $id)->where('code', $value)->first();
+    
+                    if (!$competition) {
+                        $fail('The comp_code must match the code of the competition with the specified ID.');
+                    }
+                }
+            ],
+            'comp_code' =>  [
                 'required','exists:competitions,code',
                 function ($attribute, $value, $fail) use ($id) {
                     $competition = Competition::where('id', $id)->where('code', $value)->first();
@@ -108,12 +121,19 @@ class ParticipantController extends Controller
     
         $competition = Competition::where('code', $validatedData['comp_code'])->where('id',$id)->firstOrFail();
    
+        $competition = Competition::where('code', $validatedData['comp_code'])->where('id',$id)->firstOrFail();
+        $user = Auth::user();
         $participant = new Participant;
         $participant->name = $validatedData['name'];
         $participant->submission = $validatedData['submission'];
+    
         $participant->competition_id = $competition->id;
         $participant->comp_code= $validatedData['comp_code'];
+       
+      
+        $participant->user_id=$user->id;
         $participant->save();
+        
         
         return redirect('/competitions')->with('success','You have successfully joined the competition.');
 
