@@ -26,7 +26,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 Route::group(['middleware' => 'auth'], function() {
     Route::group(['middleware' => 'role:Owner', 'prefix' => 'Owner', 'as' => 'Owner.'], function() {
         Route::resource('participants',\App\Http\Controllers\ParticipantController::class);
-        Route::get('/competitions/{code}/join', [CompetitionController::class, 'join'])->name('competitions.join');
+        Route::get('/competitions/{id}/join', [CompetitionController::class, 'join'])->name('competitions.join');
     });
    Route::group(['middleware' => 'role:participant', 'prefix' => 'participant', 'as' => 'participant.'], function() {
     
@@ -35,5 +35,7 @@ Route::group(['middleware' => 'auth'], function() {
 
 });
 Route::resource('competitions',\App\Http\Controllers\CompetitionController::class);
-Route::get('/competitions/{code}/join', [CompetitionController::class, 'join'])->name('competitions.join');
+Route::resource('Judge',\App\Http\Controllers\JudgeController::class);
+Route::get('/competitions/{id}/join', [CompetitionController::class, 'join'])->name('competitions.join');
 Route::resource('participants',\App\Http\Controllers\ParticipantController::class);
+Route::post('/participants/{id}', [ParticipantController::class, 'store'])->name('participants.store');

@@ -30,6 +30,11 @@
                         {{ __('participants') }}
                     </x-nav-link>
                     @endif
+                    @if (auth()->user()->role_id ==1)
+                    <x-nav-link href="{{ route('Judge.index') }}" :active="request()->routeIs('Judge')">
+                        {{ __('Judge') }}
+                    </x-nav-link>
+                    @endif
                
                    
                   

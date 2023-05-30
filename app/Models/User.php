@@ -61,4 +61,14 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+    public function hasJoinedCompetition($competitionId)
+    {
+        return $this->participants()->where('competition_id', $competitionId)->exists();
+    }
+    
+    public function participants()
+    {
+        return $this->hasMany(Participant::class);
+    }
+
 }

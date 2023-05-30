@@ -5,3 +5,14 @@
 [x-cloak] {
     display: none;
 }
+.right {
+
+    height: 90px;
+    width: 90px;
+    border: 10px dashed lightblue;
+    border-radius: 5px;
+    background-color: lightyellow;
+    float: right;
+    position: fixed;
+    margin-top: 5px;
+    }

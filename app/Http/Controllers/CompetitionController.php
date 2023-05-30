@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Participant;
 use App\Models\competition;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorecompetitionRequest;
 use App\Http\Requests\StoreParticipantRequest;
@@ -17,9 +19,11 @@ class CompetitionController extends Controller
      */
     public function index()
     {
-        $competitions = Competition::all();
-        return view('competitions.index', compact('competitions'));
-    }
+        $competitions = Competition::with('participants')->get();
+        $user = Auth::user();
+        
+        return view('competitions.index', compact('competitions', 'user'));
+}
 
     /**
      * Show the form for creating a new resource.
@@ -98,11 +102,17 @@ class CompetitionController extends Controller
     }
 
 
-    public function join(Request $request,competition $competition)
+    public function join(Request $request,$id)
     {
        
+       
+        $competition=competition::where('id',$id)->firstOrFail();
         return view('competitions.join', compact('competition'));
+       
+
+       
     }
 }
+
 
 

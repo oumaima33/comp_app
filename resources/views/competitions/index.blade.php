@@ -2,14 +2,22 @@
      <x-slot name="header"><h2 class="font-semibold text-xl text-gray-800 leading-tight">
                         {{ __('Competition list') }}
                         </h2>
+                        <div class="nav-item w-100"  >
+                            <form class="form-inline my-1 my-lg-0">
+                            <input class="form-control mr-sm-1" type="search" placeholder="search" aria-label="Search">
+                            <button class="btn btn-outline-success my-2 mu-sm-0" type="submit">Search</button>
+                            </form>
+                        </div>
                     </x-slot>
-                    <div class="py-12">
+                  
+                    
+                        <div class="py-12">
                         <div class="max-w-7xl mx-auto sm:px-8 lg:px-8">
                             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                                   
+                                    @if (auth()->user()->role_id ==1)
                                     <x-link href="{{ route('competitions.create') }}" class="m-7">Add new Competition</x-link>
-                                  
+                                   @endif
                                     <table class="w-full text-sm text-left text-gray-900">
                                       
                                         <thead class="text-xs text-gray-700 uppercase bg-gray-100">
@@ -118,9 +126,18 @@
                                                         <td class="px-2 py-2">
                                                             <x-link href="{{ route('competitions.show', $competition) }}">Show</x-link></td>
                                                     </td>
-                                                    @if (auth()->user()->role_id ==3)      
-                                                    <td class="px-2 py-2">
-                                                        <x-link href="{{ route('competitions.join', $competition) }}">JOIN</x-link></td>
+                                                    @if (auth()->user()->role_id ==3)  
+                                                    <td class="px-2 py-2">    
+                                                    
+                                                    @if ($user->hasJoinedCompetition($competition->id))
+                                                        <p  > ✓ Joined</p>
+                                                    @else
+                                                        <x-link href="{{ route('competitions.join', $competition->id) }}">JOIN </x-link> 
+                                                    @endif
+                                                            
+
+
+                                                  
                                                     </td>
                                                    
                                                     @endif
