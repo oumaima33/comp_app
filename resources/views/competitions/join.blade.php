@@ -21,7 +21,7 @@
                             <x-label for="name" value="{{ __('Participant Name') }}" />
                             <x-input id="name" class="block mt-1 w-full" type="string" name="name" :value="old('name')" required autofocus autocomplete="name" />
                             <x-label for="submission" value="{{ __('submission') }}" />
-                            <x-input id="submission" class="block mt-2 w-full" type="text" name="submission" :value="old('submission')" required autofocus autocomplete="submission" />
+                            <x-input id="submission" class="block mt-2 w-full" type="file" name="submission" :value="old('submission')" required autofocus autocomplete="submission" />
                             
                         </div>
  

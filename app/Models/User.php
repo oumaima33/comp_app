@@ -72,7 +72,7 @@ public function hasJoinedCompetition($competitionId)
 
 public function participants()
 {
-    return $this->hasMany(Participant::class);
+    return $this->hasMany(Participant::class,'user_id');
 }
 
 }
