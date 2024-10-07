@@ -5,7 +5,7 @@ use App\Models\judge;
 use App\Models\Competition;
 use App\Models\participant;
 use App\Models\User;
-
+use Illuminate\Support\Str;
 use App\Models\evaluation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -64,7 +64,7 @@ return view('emi.jury',compact(['competitions']));
             if($evaluator == null ){
                 if( $user==null){
                     
-                
+                    $password= Str::random(8);
                     $role=2;
                     $new_user=User::create([  
                      'name' => $request->name,
@@ -93,7 +93,7 @@ return view('emi.jury',compact(['competitions']));
                     ]);
                 }
                 
-                $password="12345678";
+                $password= Str::random(8);
 
                 // sending alert invitation to the evaluator by email
                 

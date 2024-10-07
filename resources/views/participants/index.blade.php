@@ -44,7 +44,7 @@
                                             @else
     
                                             {{-- @dd($data['participants']) --}}
-                                            @forelse ($data['participants'] as $participant)
+                                            @foreach ($data['participants'] as $participant)
                                             
                                             {{-- @dd($participant) --}}
                                    <tr class="bg-white border-b">
@@ -67,15 +67,11 @@
                                            </td>
                                            @endif
                                           </tr>
-                                          @empty
-                                    <tr class="bg-white border-b">
-                                        <td colspan="2"
-                                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                            {{ __('No participant found') }}
+                                         
                                     
                                     </td>
                                 </td>
-                                        @endforelse 
+                                        @endforeach
                                     @endif
                                     @endforeach
                                     @else
@@ -83,7 +79,7 @@
                                             <p>Aucune participant disponible pour le moment.</p>
                                   
                                         @else
-                                        @forelse ($participants as $participant)
+                                        @foreach($participants as $participant)
                                         <tr class="bg-white border-b">
                                             <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
                                                 {{ $participant->name}}
@@ -99,7 +95,7 @@
                                          </td>
                                          @if (auth()->user()->role_id ==1)
                                                 <td class="px-2 py-2">
-                                                    <x-link href="{{ route('participants.edit', $participant) }}">Edit</x-link></td><td>
+                                                  
                                                     <form method="POST" action="{{ route('participants.destroy', $participant) }}" class="inline-block">
                                                         @csrf
                                                         @method('DELETE')
@@ -116,15 +112,9 @@
                                 
                                 </tr>
                                            
-                                       @empty
-                                           <tr class="bg-white border-b">
-                                               <td colspan="2"
-                                                   class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                                   {{ __('No participant found') }}
-                                           
-                                           </td>
-                                       </td>
-                                       @endforelse
+                                     
+                                       
+                                       @endforeach
                                        @endif
                                        @endif
                                        </tbody>
@@ -133,4 +123,5 @@
                            </div>
                        </div>
                    </div>
+                   <script src="https://kit.fontawesome.com/68ee66ea75.js" crossorigin="anonymous"></script>
                </x-app-layout>

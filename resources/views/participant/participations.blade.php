@@ -2,70 +2,62 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Mes anciennes Participation') }}
+            {{ __('Mes anciennes Participations') }}
         </h2>
-        {{-- @dd($parData) --}}
-        {{-- @dd($parData['participant']) --}}
-             @if (empty($parData['participant']))
-                    <p>Aucune evaluation disponible pour le moment.</p>
-             @else
-
-        <h6>Bonjour,{{$parData['participant']->name}}</h6>
     </x-slot>
+        {{-- @dd($parData) --}}
+       
+
+        
+   
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-9 lg:px-9">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                  
     <table class="w-full text-sm text-left text-gray-900">
-        <thead>
+        <thead class="text-xs text-gray-700 uppercase bg-gray-100">
             <tr>
-                <th>Nom competition</th>
-                <th>Nombre de participants</th>
-                <th>Description</th>
-                <th>Catégorie</th>
-                <th>submission</th>
-                <th>Criteres</th>
+                <th scope="col" class="px-2 ">Competition Name</th>
                 
-                <th>note</th>
-                <th>score</th>
-                <th>Certificat</th>
+                <th scope="col" class="px-2 ">Description</th>
+                <th scope="col" class="px-2 ">Category</th>
+                <th scope="col" class="px-2 ">submission</th>
+                
+                <th scope="col" class="px-2 "> score</th>
+                <th scope="col" class="px-2 ">Certificat</th>
             </tr>
         </thead>
         <tbody>
-           {{-- @dd(($parData['competitions'])) --}}
-                <tr>
-                  @if (empty($parData['competitions'])  )
+            @foreach($parData as $Data)
+            {{-- @dd($Data['participant']) --}}
+                 @if (empty($Data['participant']))
+                        <p>Aucune evaluation disponible pour le moment.</p>
+                 @else
+           {{-- @dd(($Data['competitions'])) --}}
+           <tr class="bg-white border-b">
+                  @if (empty($Data['competitions'])  )
                   <p>Aucune evaluation disponible pour le moment.</p>
              @else
-             @foreach( $parData['competitions'] as $competition)
+             @foreach( $Data['competitions'] as $competition)
              {{-- @dd($competition) --}}
-                    <td>{{$competition->comp_name }}</td>
-                    <td>{{ $competition->part_nbr }}</td>
-                    <td>{{ $competition->description }}</td>
-                    <td>{{ $competition->categorie }}</td>
-                    <td>{{$parData['participant']->submission}}<a href="{{ $parData['participant']->submission }}" download>
+             
+                    <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">{{$competition->comp_name }}</td>
+                   
+                    <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">{{ $competition->description }}</td>
+                    <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">{{ $competition->categorie }}</td>
+                    <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">{{$Data['participant']->submission}}<a href="{{ $Data['participant']->submission }}" download>
                         <i class="fa fa-download"></i> </a></td>
-                    <td>
-                        {{ $competition->criteria_1 }} /
-                        {{ $competition->criteria_2 }} /
-                        {{ $competition->criteria_3 }} /
-                        {{ $competition->criteria_4 }} /
-                        {{ $competition->criteria_5 }} 
-                        
-                    </td>
-                    {{-- @dd($parData['evaluations']) --}}
-                    @if (empty($parData['evaluations'])  )
+                    
+                    {{-- @dd($Data['evaluations']) --}}
+                    @if (empty($Data['evaluations'])  )
                   <p>Aucune evaluation disponible pour le moment.</p>
              @else
-             @foreach( $parData['evaluations'] as $evaluation)
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
+             @foreach( $Data['evaluations'] as $evaluation)
+                  
+                   
+                    
+                    {{-- <td>
                         {{ $evaluation->note1 }} /
                         {{$evaluation->note2 }} /
                         {{$evaluation->note3 }} /
@@ -73,14 +65,14 @@
                         {{$evaluation->note5 }} 
                         <br>
                     </td>
-                
+                 --}}
                 
                     
                     <td> {{ $score=$evaluation->note1+$evaluation->note2+$evaluation->note3+$evaluation->note4+$evaluation->note5;
                     }}<br> 
                     </td>
-                    <td class="px-2 py-2"> <x-link href="{{ route('certificate.generate',['participant'=>$parData['participant'],'competition'=>$competition,'score'=>$score]) }}"> générer</x-link></td>
-                </tr>
+                    <td class="px-2 py-2"> <x-link href="{{ route('certificate.generate',['participant'=>$Data['participant'],'competition'=>$competition,'score'=>$score]) }}"> générer</x-link></td>
+                
 
                     @endforeach
                     @endif
@@ -89,7 +81,7 @@
                     @endforeach
                     @endif
                     @endif
-                   
+                   @endforeach
       
                 </tr>
             

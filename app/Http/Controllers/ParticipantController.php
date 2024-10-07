@@ -34,7 +34,7 @@ class ParticipantController extends Controller
             ];
         }
         
-        // dd($juryId);
+        // dd($juryData);
         // $participants = Participant::join('competitions', 'participant.competition_id', '=', 'competitions.id')
         //     ->where('competitions.id', $juryId)
         //     ->get();
@@ -50,25 +50,27 @@ class ParticipantController extends Controller
     {
 
         
-        $participants= Participant ::where('name',auth()->user()->name)->get();
+        $participants=auth()->user()->participants;
+        // dd($participants);
+        $parData=[];
         foreach($participants as $participant){
             // dd($participant->competition_id);
             $competitions = Competition::where('id',$participant->competition_id)->get();
             $evaluations = DB::table('evaluation')->where('fk_par', $participant->id)->get();
             // dd($evaluations);
-            $parData=[
+            $parData[]=[
                 'participant' => $participant,
                        
                 'competitions'=>$competitions,
                 'evaluations' => $evaluations,
 
-            ];
-            
-            
+            ];    
         
         }
 
+        // dd($parData);
         return view('participant.participations', compact('parData'));
+        
     
     }
     public function generateCertificate(Participant $participant, competition $competition, $score)

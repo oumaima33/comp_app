@@ -104,7 +104,8 @@
 
 <div class="container">
   <div class="logo">
-    <img src="./images/logo.png" alt="Logo">
+    <img src="./images/logo.jpeg " alt="Logo">
+    {{-- <link rel="stylesheet" href="style.css"> --}}
   </div>
   
   <h2 class="title">Certificat de participation</h2><br><br>

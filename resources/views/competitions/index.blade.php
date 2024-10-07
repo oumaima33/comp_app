@@ -1,13 +1,15 @@
 <x-app-layout>
      <x-slot name="header"><h2 class="font-semibold text-xl text-gray-800 leading-tight">
                         {{ __('Competition list') }}
+                        
+                        <div class="box" style="float:right;">
+                            <form name="search"  action="{{ route('competitions.search') }}" method="GET">
+                                <link rel="stylesheet" href="{{ asset('style.css') }}" >
+                                <input class="input" onmouseout="this.value = ''; this.blur();" type="text" name="search" placeholder="Search" >
+                                </form>
+                                <i class="fas fa-search"></i>
+                            </div>
                         </h2>
-                        <div class="nav-item w-100"  >
-                            <form class="form-inline my-1 my-lg-0">
-                            <input class="form-control mr-sm-1" type="search" placeholder="search" aria-label="Search">
-                            <button class="btn btn-outline-success my-2 mu-sm-0" type="submit">Search</button>
-                            </form>
-                        </div>
                     </x-slot>
                   
                     
@@ -36,10 +38,16 @@
                                             </th>
                                             @endif
                                             <th scope="col" class="px-2 py-2">
+                                                start at
+                                            </th>
+                                            <th scope="col" class="px-2 py-2">
+                                                end at
+                                            </th>
+                                            <th scope="col" class="px-2 py-2">
                                                 description
                                             </th>
                                             <th scope="col" class="px-2 py-2">
-                                                categorie
+                                                category
                                             </th>
                                             @if (auth()->user()->role_id ==1)
                                             <th scope="col" class="px-2 py-2">
@@ -82,11 +90,17 @@
                                                 @else
         
 
-                                                @forelse ($data['competitions'] as $competition)
+                                                @foreach ($data['competitions'] as $competition)
                                                     <tr class="bg-white border-b">
                                                                 <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
                                                          {{ $competition->comp_name}}
                                                         </td>
+                                                        <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                                            {{ $competition->satrted_at}}
+                                                           </td>
+                                                           <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                                            {{ $competition->ended_at}}
+                                                           </td>
                                             
                                             <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
                                                 {{ $competition->description}}
@@ -106,16 +120,8 @@
                                         
                                         </tr>
                                         
-                                    @empty
-                                        <tr class="bg-white border-b">
-                                            <td colspan="2"
-                                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                                {{ __('No competition found') }}
-                                        
-                                        </td>
-                                    </td>
-                                    
-                                    @endforelse 
+                                   
+                                    @endforeach
                                     @endif
                                     @endforeach
                                     @else
@@ -137,6 +143,12 @@
                                     {{ $competition->part_nbr}}
                                 </td>
                                 @endif
+                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                    {{ $competition->started_at}}
+                                </td>
+                                <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                    {{ $competition->ended_at}}
+                                </td>
                                 <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap">
                                     {{ $competition->description}}
                                 </td>
@@ -175,9 +187,14 @@
                                         <td class="px-2 py-2">
                                             <x-link href="{{ route('competitions.show', $competition) }}">Show</x-link></td>
                                     </td>
-                                    @if (auth()->user()->role_id ==3)      
+                                    @if (auth()->user()->role_id ==3) 
+                                         
                                     <td class="px-2 py-2">
-                                        <x-link href="{{ route('competitions.join', $competition->id) }}">JOIN</x-link></td>
+                                        @if ($user->hasJoinedCompetition($competition->id))
+                                            <p  > ✓ Joined</p>
+                                        @else
+                                            <x-link href="{{ route('competitions.join', $competition->id) }}" onclick="return confirm('you will receive an email to register')">JOIN </x-link> 
+                                        @endif
                                     </td>
                                     @endif
                             

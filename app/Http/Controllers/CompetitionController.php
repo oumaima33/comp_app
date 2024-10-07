@@ -67,6 +67,8 @@ class CompetitionController extends Controller
             'comp_name' => 'required|max:255',
             'code'=>'required',
             'part_nbr' => 'required|integer',
+            'started_at'=>'required',
+            'ended_at'=>'required',
             'description' => 'required',
             'categorie' => 'required',
         ]);
@@ -75,6 +77,8 @@ class CompetitionController extends Controller
         $competition->comp_name = $request->input('comp_name');
         $competition->code = $request->input('code');
         $competition->part_nbr = $request->input('part_nbr');
+        $competition->started_at = $request->input('started_at');
+        $competition->ended_at = $request->input('ended_at');
         $competition->description = $request->input('description');
         $competition->categorie = $request->input('categorie');
         $competition->criteria_1 = $request->input('criteria_1');
@@ -149,6 +153,14 @@ class CompetitionController extends Controller
 
        
     }
+    public function search(Request $request)
+    {
+
+             $search_text = $request->query('search');
+             $user=auth()->user();
+             $competitions=Competition::where('comp_name','like','%'.$search_text.'%')->get();
+             return view('competitions.index', compact(['competitions','user']));
+ }
 }
 
 

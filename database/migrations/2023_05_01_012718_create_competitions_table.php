@@ -16,6 +16,8 @@ return new class extends Migration
             $table->integer('code');
             $table->string('comp_name');
             $table->integer('part_nbr');
+            $table->date('started_at');
+            $table->date('ended_at');
             $table->text('description');
             $table->text('categorie');
             $table->text('criteria_1');

@@ -6,6 +6,7 @@ use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\JudgeController;
 use App\Http\Controllers\EvaluationController;
+use Illuminate\Http\Request;
 
 
 /*
@@ -28,13 +29,18 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
  
     return redirect('/dashboard');
 })->middleware(['auth', 'signed'])->name('verification.verify');
+// Route::post('/email/verification-notification', function (Request $request) {
+//     $request->user()->sendEmailVerificationNotification();
+ 
+//     return back()->with('message', 'Verification link sent!');
+// })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('homepage');
 });
 
 
@@ -71,4 +77,5 @@ Route::get('/judges',[JudgeController::class,'index'])->name('judges.index');
 Route::post('/judges/{id_comp}',[JudgeController::class,'store'])->name('judges.store');
 Route::get('/judges/{id}',[JudgeController::class,'create'])->name('judges.invite');
 Route::get('/judges/{judge}/destroy',[JudgeController::class,'destroy'])->name('judges.destroy');
+Route::get('/search', [CompetitionController::class, 'search'])->name('competitions.search');
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\participant;
 use App\Models\competition;
 use App\Models\evaluation;
+use App\Models\judge;
 use Illuminate\Http\Request;
 
 class EvaluationController extends Controller
@@ -50,7 +51,10 @@ class EvaluationController extends Controller
         $evaluation->note5 = $request->input('note5');
         
         $evaluation->fk_par =$participantID;
-        $evaluation->fk_jd = auth()->user()->id;
+        // dd($participantID);
+        $participant=Participant::where('id',$participantID)->get();
+        $judge= Judge::where('comp_code',auth()->user()->id)->where('competition_id',$participant[0]->competition_id)->get();
+        $evaluation->fk_jd = $judge[0]->id;
         
         
         

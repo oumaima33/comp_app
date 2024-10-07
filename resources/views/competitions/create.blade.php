@@ -21,6 +21,11 @@
                             <x-input id="code" class="block mt-1 w-full" type="int" name="code" :value="old('code')" required autofocus autocomplete="code" />
                             <x-label for="part_nbr" value="{{ __('Participant Number') }}" />
                             <x-input id="part_nbr" class="block mt-2 w-full" type="int" name="part_nbr" :value="old('part_nbr')" required autofocus autocomplete="part_nbr" />
+                            <x-label for="started_at" value="{{ __('start_at') }}" />
+                            <x-input id="started_at" class="block mt-2 w-full" type="date" name="started_at" :value="old('started_at')" required autofocus autocomplete="started_at" />
+                            <x-label for="ended_at" value="{{ __('end_at') }}" />
+                            <x-input id="ended_at" class="block mt-2 w-full" type="date" name="ended_at" :value="old('ended_at')" required autofocus autocomplete="ended_at" />
+
                             <x-label for="description" value="{{ __('Description') }}" />
                             <x-input id="description comp" class="block mt-1 w-full" type="text" name="description" :value="old('description')" required autofocus autocomplete="description" />
                             <x-label for="categorie" value="{{ __('categorie') }}" />

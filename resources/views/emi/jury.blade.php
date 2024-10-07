@@ -7,10 +7,11 @@
         
     </x-slot>
 
-<div class="modal fade" id="addEvaluatorModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg px-4 py-4">
+                    <x-validation-errors class="mb-4" />
                 @if (count($competitions) === 0)
                 <p>Aucune compétition disponible pour le moment.</p>
             @else
@@ -42,7 +43,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <!-- Actions à définir selon vos besoins -->
                                             <!-- Par exemple : Afficher les détails du jury, le supprimer, etc. -->
-                                            <x-link href="">Voir détails</x-link>
+                                            
                                             <x-link href="{{route('judges.destroy',$jury)}}">Supprimer</x-button>
                                         </td>
                                     </tr>

@@ -22,6 +22,11 @@
                             <x-input id="code" class="block mt-1 w-full" type="text" name="code" :value="old('code')" required autofocus autocomplete="code" />
                             <x-label for="part_nbr" value="{{ __('Participant Number') }}" />
                             <x-input id="part_nbr" class="block mt-2 w-full" type="int" name="part_nbr" :value="$competition->part_nbr" required autofocus autocomplete="part_nbr" />
+                                <x-label for="started_at" value="{{ __('start_at') }}" />
+                                <x-input id="started_at" class="block mt-2 w-full" type="date" name="started_at" :value="$competition->started_at" required autofocus autocomplete="started_at" />
+                                    <x-label for="ended_at" value="{{ __('end_at') }}" />
+                                    <x-input id="ended_at" class="block mt-2 w-full" type="date" name="ended_at" :value="$competition->ended_at" required autofocus autocomplete="ended_at" />
+
                             <x-label for="description" value="{{ __('Description') }}" />
                             <x-input id="description comp" class="block mt-1 w-full" type="text" name="description" :value="$competition->description" required autofocus autocomplete="description" />
                             <x-label for="categorie" value="{{ __('categorie') }}" />
@@ -36,10 +41,7 @@
                             <x-input id=" criteria 4" class="block mt-1 w-full" type="text" name=" criteria 4" :value="$competition->criteria_4" required autofocus autocomplete=" criteria 4" />
                             <x-label for=" criteria 5" value="{{ __(' criteria 5') }}" />
                             <x-input id=" criteria 5" class="block mt-1 w-full" type="text" name=" criteria 5" :value="$competition->criteria_5" required autofocus autocomplete=" criteria 5" />
-                            <x-label for=" criteria 6" value="{{ __(' criteria 6') }}" />
-                            <x-input id=" criteria 6" class="block mt-1 w-full" type="text" name=" criteria 6" :value="$competition->criteria_6" required autofocus autocomplete=" criteria 6" />
-                            <x-label for=" criteria 7" value="{{ __(' criteria 7') }}" />
-                            <x-input id=" criteria 7" class="block mt-1 w-full" type="text" name=" criteria 7" :value="$competition->criteria_7" required autofocus autocomplete=" criteria 7" />
+                           
                         </div>
  
                         <div class="flex mt-4">

@@ -10,7 +10,7 @@ class competition extends Model
     use HasFactory;
     protected $table='competitions';
     protected $fillable=['comp_name'
-    ,'part_nbr','code'
+    ,'part_nbr','code','started_at','ended_at'
     ,'description'
     ,'categorie'
     ,'criteria_1'
